@@ -1,0 +1,5 @@
+# Secrets
+config/.env
+
+# macOS
+.DS_Store
