@@ -28,8 +28,8 @@ D1="${3:-$(date -v-30d +%Y-%m-%d 2>/dev/null || date -d '30 days ago' +%Y-%m-%d)
 D2="${4:-$(date +%Y-%m-%d)}"
 LIMIT="${5:-100}"
 
-ENCODED_PATH=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$SELLER_NAME'))" 2>/dev/null || \
-  node -e "process.stdout.write(encodeURIComponent('$SELLER_NAME'))" 2>/dev/null || \
+ENCODED_PATH=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$SELLER_NAME" 2>/dev/null || \
+  node -e "process.stdout.write(encodeURIComponent(process.argv[1]))" "$SELLER_NAME" 2>/dev/null || \
   printf '%s' "$SELLER_NAME" | sed 's/ /%20/g')
 
 QUERY="d1=${D1}&d2=${D2}&path=${ENCODED_PATH}"

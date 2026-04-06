@@ -15,8 +15,15 @@ CONFIG_FILE="$SKILL_ROOT/config/.env"
 
 load_config() {
   if [[ -f "$CONFIG_FILE" ]]; then
-    # shellcheck disable=SC1090
-    source "$CONFIG_FILE"
+    while IFS='=' read -r key value; do
+      # Skip comments and empty lines
+      [[ "$key" =~ ^[[:space:]]*# ]] && continue
+      [[ -z "$key" ]] && continue
+      # Strip surrounding whitespace and quotes
+      key=$(printf '%s' "$key" | xargs)
+      value=$(printf '%s' "$value" | sed 's/^["'\''"]//;s/["'\''"]$//')
+      export "$key=$value"
+    done < "$CONFIG_FILE"
   fi
 
   if [[ -z "${MPSTATS_TOKEN:-}" ]]; then

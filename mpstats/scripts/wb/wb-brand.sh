@@ -30,8 +30,8 @@ D2="${4:-$(date +%Y-%m-%d)}"
 LIMIT="${5:-100}"
 FBS="${6:-0}"
 
-ENCODED_BRAND=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$BRAND'))" 2>/dev/null || \
-  node -e "process.stdout.write(encodeURIComponent('$BRAND'))" 2>/dev/null || \
+ENCODED_BRAND=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$BRAND" 2>/dev/null || \
+  node -e "process.stdout.write(encodeURIComponent(process.argv[1]))" "$BRAND" 2>/dev/null || \
   printf '%s' "$BRAND" | sed 's/ /%20/g')
 
 if [ "$REPORT" = "products" ]; then

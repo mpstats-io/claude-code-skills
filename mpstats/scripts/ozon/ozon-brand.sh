@@ -32,8 +32,8 @@ LIMIT="${5:-100}"
 FBS="${6:-0}"
 NEWSMODE="$7"
 
-ENCODED_BRAND=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$BRAND'))" 2>/dev/null || \
-  node -e "process.stdout.write(encodeURIComponent('$BRAND'))" 2>/dev/null || \
+ENCODED_BRAND=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$BRAND" 2>/dev/null || \
+  node -e "process.stdout.write(encodeURIComponent(process.argv[1]))" "$BRAND" 2>/dev/null || \
   printf '%s' "$BRAND" | sed 's/ /%20/g')
 
 BASE_URL="https://mpstats.io/api/analytics/v1/oz/brand"

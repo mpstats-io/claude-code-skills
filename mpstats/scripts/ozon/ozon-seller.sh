@@ -36,8 +36,8 @@ NEWSMODE="$7"
 if printf '%s' "$SELLER_INPUT" | grep -Eq '^[0-9]+$'; then
   SELLER_QUERY="path=${SELLER_INPUT}"
 else
-  ENCODED_PATH=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$SELLER_INPUT'))" 2>/dev/null || \
-    node -e "process.stdout.write(encodeURIComponent('$SELLER_INPUT'))" 2>/dev/null || \
+  ENCODED_PATH=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$SELLER_INPUT" 2>/dev/null || \
+    node -e "process.stdout.write(encodeURIComponent(process.argv[1]))" "$SELLER_INPUT" 2>/dev/null || \
     printf '%s' "$SELLER_INPUT" | sed 's/ /%20/g')
   SELLER_QUERY="path=${ENCODED_PATH}"
 fi

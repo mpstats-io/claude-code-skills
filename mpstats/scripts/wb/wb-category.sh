@@ -30,8 +30,8 @@ D2="${3:-$(date +%Y-%m-%d)}"
 LIMIT="${4:-100}"
 FBS="${5:-0}"
 
-ENCODED_PATH=$(python3 -c "import urllib.parse; print(urllib.parse.quote('$CATEGORY_PATH'))" 2>/dev/null || \
-  node -e "process.stdout.write(encodeURIComponent('$CATEGORY_PATH'))" 2>/dev/null || \
+ENCODED_PATH=$(python3 -c "import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1]))" "$CATEGORY_PATH" 2>/dev/null || \
+  node -e "process.stdout.write(encodeURIComponent(process.argv[1]))" "$CATEGORY_PATH" 2>/dev/null || \
   printf '%s' "$CATEGORY_PATH" | sed 's/ /%20/g; s|/|%2F|g')
 
 curl -s --location --request POST \
