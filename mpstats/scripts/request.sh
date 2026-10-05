@@ -60,7 +60,9 @@ if [ "$METHOD_UPPER" = "GET" ]; then
     --header "X-Mpstats-TOKEN: $TOKEN" \
     --header 'Content-Type: application/json'
 elif [ "$METHOD_UPPER" = "POST" ]; then
-  PAYLOAD="${BODY_JSON:-{\"startRow\":0,\"endRow\":100,\"filterModel\":{},\"sortModel\":[{\"colId\":\"revenue\",\"sort\":\"desc\"}]}}"
+  # Keep the default body outside ${...:-...}: bash ends the expansion at the first "}" inside it
+  DEFAULT_BODY='{"startRow":0,"endRow":100,"filterModel":{},"sortModel":[{"colId":"revenue","sort":"desc"}]}'
+  PAYLOAD="${BODY_JSON:-$DEFAULT_BODY}"
   curl -s --location --request POST "$URL" \
     --header "X-Mpstats-TOKEN: $TOKEN" \
     --header 'Content-Type: application/json' \
